@@ -1,4 +1,4 @@
-# Java Application Project
+# Multi-Tier-Web-Application-Setup,-Locally
 
 ![Project Architecture](Project-Architecture.png)
 
