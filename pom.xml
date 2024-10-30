@@ -222,7 +222,7 @@
                         <contextPath>/</contextPath>
                     </webApp>
                     <jvmArgs>
-                        <jvmArg>-Xmx512m</jvmArg>
+                        <jvmArg>-Xmx1024m</jvmArg>
                     </jvmArgs>
                 </configuration>
             </plugin>
