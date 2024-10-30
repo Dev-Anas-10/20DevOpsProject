@@ -263,6 +263,7 @@
                     <webApp>
                         <contextPath>/</contextPath>
                     </webApp>
+                    <jvm> -Xmx512m </jvm>
                 </configuration>
             </plugin>
 
