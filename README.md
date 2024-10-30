@@ -1,4 +1,4 @@
-# Java Application Deployment on AWS EC2
+# 2.AWS-Cloud-for-Web-App-Setup-Lift&Shift
 
 ## Project Overview
 
