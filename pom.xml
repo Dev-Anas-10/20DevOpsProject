@@ -1,3 +1,12 @@
+<plugin>
+<groupId>org.apache.maven.plugins</groupId>
+<artifactId>maven-war-plugin</artifactId>
+<version>3.2.2</version>
+</plugin>
+
+
+<artifactId>jacoco-maven-plugin</artifactId>
+<version>0.8.4</version>
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
