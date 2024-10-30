@@ -18,23 +18,9 @@ Vagrant.configure("2") do |config|
     end
 
     # Provisioning script for db01
+    db01.vm.provision "shell", path: "db01.sh"
     db01.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
-      sudo dnf update -y
-      sudo dnf install epel-release -y
-      sudo dnf install mariadb-server git -y
-      sudo systemctl start mariadb
-      sudo systemctl enable mariadb
-      #sudo mysql_secure_installation  # Uncomment to secure MariaDB
-      sudo cp /vagrant/set-db.sh /root/
-      chmod +x /root/set-db.sh
-      sudo /root/set-db.sh
-      sudo rm -rf set-db.sh
-      cd /tmp/
-      git clone -b 1.Multi-Tier-Web-Application-Setup,-Locally https://github.com/Dev-Anas-10/20DevOpsProject.git
-      cd 20DevOpsProject
-      mysql -u root -padmin123 accounts < src/main/resources/db_backup.sql
-      sudo systemctl restart mariadb
     SHELL
   end
 
@@ -54,16 +40,9 @@ Vagrant.configure("2") do |config|
     end
 
     # Provisioning script for mc01
+    mc01.vm.provision "shell", path: "mc01.sh"
     mc01.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
-      sudo dnf update -y
-      sudo dnf install epel-release -y
-      sudo dnf install -y memcached libevent
-      sudo systemctl start memcached
-      sudo systemctl enable memcached
-      sudo sed -i 's/-l 127.0.0.1/-l 0.0.0.0/' /etc/sysconfig/memcached  # Listen on all interfaces
-      sudo systemctl restart memcached
-      sudo memcached -p 11211 -U 11111 -u memcached -d
     SHELL
   end
 
@@ -83,19 +62,9 @@ Vagrant.configure("2") do |config|
     end
 
     # Provisioning script for rmq01
+    rmq01.vm.provision "shell", path: "rmq01.sh"
     rmq01.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
-      sudo dnf update -y
-      sudo dnf install epel-release -y
-      sudo dnf install wget -y
-      sudo dnf -y install centos-release-rabbitmq-38
-      sudo dnf --enablerepo=centos-rabbitmq-38 -y install rabbitmq-server
-      sudo systemctl enable --now rabbitmq-server
-      sudo sh -c 'echo "[{rabbit, [{loopback_users, []}]}]." > /etc/rabbitmq/rabbitmq.config'
-      sudo rabbitmqctl add_user test test
-      sudo rabbitmqctl set_user_tags test administrator
-      sudo rabbitmqctl set_permissions -p / test ".*" ".*" ".*"
-      sudo systemctl restart rabbitmq-server
     SHELL
   end
 
@@ -115,38 +84,9 @@ Vagrant.configure("2") do |config|
     end
 
     # Provisioning script for app01
+    app01.vm.provision "shell", path: "app01.sh"
     app01.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
-      sudo cp /vagrant/tomcat-setup.sh /root/
-      sudo chmod +x /root/tomcat-setup.sh
-      sudo /root/tomcat-setup.sh
-
-      # Navigate to the /tmp/ directory
-      cd /tmp/
-
-      # Download Maven
-      wget https://archive.apache.org/dist/maven/maven-3/3.9.9/binaries/apache-maven-3.9.9-bin.zip
-
-      # Unzip the downloaded Maven package
-      unzip apache-maven-3.9.9-bin.zip
-
-      # Copy Maven to the desired directory
-      sudo cp -r apache-maven-3.9.9 /usr/local/maven3.9
-
-      # Set MAVEN_OPTS environment variable
-      export MAVEN_OPTS="-Xmx512m"
-
-      cd /tmp/
-      sudo git clone -b 1.Multi-Tier-Web-Application-Setup,-Locally https://github.com/Dev-Anas-10/20DevOpsProject.git
-      cd 20DevOpsProject
-      #vim src/main/resources/application.properties  # Update file with backend server details
-      sudo /usr/local/maven3.9/bin/mvn install
-      sudo systemctl stop tomcat
-      sudo rm -rf /usr/local/tomcat/webapps/ROOT*
-      sudo cp target/vprofile-v2.war /usr/local/tomcat/webapps/ROOT.war
-      sudo systemctl start tomcat
-      sudo chown tomcat.tomcat /usr/local/tomcat/webapps -R
-      sudo systemctl restart tomcat
     SHELL
   end
 
@@ -166,11 +106,9 @@ Vagrant.configure("2") do |config|
     end
 
     # Provisioning script for web01
+    web01.vm.provision "shell", path: "web01.sh"
     web01.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
-      sudo cp /vagrant/nginx-setup.sh /root/
-      sudo chmod +x /root/nginx-setup.sh
-      sudo /root/nginx-setup.sh
     SHELL
   end
 end
