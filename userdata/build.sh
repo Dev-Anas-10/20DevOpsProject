@@ -31,6 +31,7 @@ git clone -b "2.AWS-Cloud-for-Web-App-Setup-Lift&Shift" https://github.com/Dev-A
 cd 20DevOpsProject
 
 # Build the Java project with Maven
+export MAVEN_OPTS="-Xmx1024m"
 mvn clean package
 
 # Find the JAR file
