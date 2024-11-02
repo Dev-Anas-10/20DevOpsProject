@@ -10,6 +10,9 @@ RUN git clone -b 3.Containerization-of-Java-project-using-Docker https://github.
 # Set the working directory
 WORKDIR /app/20DevOpsProject
 
+# List files to verify if pom.xml is present
+RUN ls -la
+
 # Build the application
 RUN mvn clean install
 
