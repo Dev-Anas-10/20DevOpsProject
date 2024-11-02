@@ -6,6 +6,7 @@ services:
     build:
       context: ./Dockerfiles/db
       dockerfile: Dockerfile
+    image: db01
     environment:
       MYSQL_DATABASE: accounts
       MYSQL_ROOT_PASSWORD: admin123
@@ -19,6 +20,7 @@ services:
     build:
       context: ./Dockerfiles/app
       dockerfile: Dockerfile
+    image: app01
     depends_on:
       - db01
     ports:
@@ -29,6 +31,7 @@ services:
     build:
       context: ./Dockerfiles/web
       dockerfile: Dockerfile
+    image: web01
     depends_on:
       - app01
     ports:
