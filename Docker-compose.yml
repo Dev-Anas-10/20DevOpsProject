@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # Database service
+  db01:
+    build:
+      context: ./Dockerfiles/db
+      dockerfile: Dockerfile
+    environment:
+      MYSQL_DATABASE: accounts
+      MYSQL_ROOT_PASSWORD: admin123
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+  # Application service (Tomcat with Java app)
+  app01:
+    build:
+      context: ./Dockerfiles/app
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+
+  # Web service (NGINX as a reverse proxy)
+  web01:
+    build:
+      context: ./Dockerfiles/web
+      dockerfile: Dockerfile
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+
+  # Memcached service
+  mc01:
+    image: memcached
+    ports:
+      - "11211:11211"
+
+  # RabbitMQ service
+  rmq01:
+    image: rabbitmq:3-management
+    environment:
+      RABBITMQ_DEFAULT_USER: test
+      RABBITMQ_DEFAULT_PASS: test
+    ports:
+      - "5672:5672"    # RabbitMQ port
+      - "15672:15672"  # RabbitMQ management UI port
+
+volumes:
+  db_data:
