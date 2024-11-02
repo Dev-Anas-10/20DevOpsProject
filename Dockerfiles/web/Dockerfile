@@ -7,5 +7,3 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Expose the default NGINX port
 EXPOSE 80
 
-# Start NGINX
-CMD ["nginx-debug", "-g", "daemon off;"]
