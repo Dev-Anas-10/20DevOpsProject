@@ -43,7 +43,7 @@ services:
   # Memcached service
   mc01:
     image: memcached
-    container_name: me01
+    container_name: mc01
     ports:
       - "11211:11211"
 

@@ -4,7 +4,7 @@ FROM nginx
 RUN rm -rf /etc/nginx/conf.d/default.conf
 
 # Copy the custom nginx.conf file to the container
-COPY nginvproapp.conf /etc/nginx/nginx.conf
+COPY nginvproapp.conf /etc/nginx/conf.d/nginx.conf
 
 # Expose the default NGINX port
 EXPOSE 80
