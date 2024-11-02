@@ -10,4 +10,4 @@ COPY nginvproapp.conf /etc/nginx/nginx.conf
 EXPOSE 80
 
 # Start NGINX
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx-debug", "-g", "daemon off;"]
