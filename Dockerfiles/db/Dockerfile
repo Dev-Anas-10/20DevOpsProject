@@ -6,7 +6,7 @@ ENV MYSQL_DATABASE=accounts
 ENV MYSQL_ROOT_PASSWORD=admin123
 
 # Copy the SQL schema file into the initialization directory
-COPY db-backup.sql /docker-entrypoint-initdb.d/
+COPY db_backup.sql /docker-entrypoint-initdb.d/
 
 # Optional: Run additional commands if needed
 # Example:
