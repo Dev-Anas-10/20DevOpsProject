@@ -1,5 +1,5 @@
 # Step 1: Build the application using Maven
-FROM maven AS builder
+FROM maven:3.9.9-ibm-semeru-21-jammy AS builder
 
 # Set the working directory
 WORKDIR /app
