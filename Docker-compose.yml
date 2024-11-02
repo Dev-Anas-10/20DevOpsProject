@@ -20,7 +20,7 @@ services:
       context: ./Dockerfiles/app
       dockerfile: Dockerfile
     depends_on:
-      - db
+      - db01
     ports:
       - "8080:8080"
 
@@ -30,7 +30,7 @@ services:
       context: ./Dockerfiles/web
       dockerfile: Dockerfile
     depends_on:
-      - app
+      - app01
     ports:
       - "80:80"
 
