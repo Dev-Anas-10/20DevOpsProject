@@ -2,10 +2,13 @@
 FROM maven AS builder
 
 # Set the working directory
-WORKDIR /app/20DevOpsProject
+WORKDIR /app
 
 # Clone the GitHub repository (replace the URL with your repository)
 RUN git clone -b 3.Containerization-of-Java-project-using-Docker https://github.com/Dev-Anas-10/20DevOpsProject.git
+
+# Set the working directory
+WORKDIR /app/20DevOpsProject
 
 # Build the application
 RUN mvn clean install
