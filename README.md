@@ -26,9 +26,3 @@ To run the application locally, follow these steps:
 ### Prerequisites
 - Docker installed on your machine.
 - Docker Compose (optional, for easier multi-container management).
-
-### Build the Images
-To build the Docker images, navigate to your project directory and run:
-
-```bash
-docker-compose build
