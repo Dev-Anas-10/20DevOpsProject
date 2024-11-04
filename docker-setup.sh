@@ -30,3 +30,6 @@ sudo chmod +x /usr/local/bin/docker-compose
 # Print Docker and Docker Compose versions to confirm installation
 docker --version
 docker-compose --version
+
+# docker-compose down --volumes                  # To delete all containers
+# docker system prune -a --volumes               # To delete all thing
