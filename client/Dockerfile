@@ -17,7 +17,7 @@ RUN npm run build --prod
 FROM nginx
 
 # Copy the build output from the build stage to the Nginx directory
-COPY --from=build /app/client/dist/clinet/ /usr/share/nginx/html
+COPY --from=build /app/client/dist/client/ /usr/share/nginx/html
 
 # Copy a custom Nginx configuration file if needed
 COPY nginx.conf /etc/nginx/conf.d/default.conf
