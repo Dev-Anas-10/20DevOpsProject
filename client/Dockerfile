@@ -8,7 +8,8 @@ WORKDIR /app
 COPY ./ ./client
 
 # Install dependencies and build the application
-RUN cd client
+WORKDIR /app/client
+
 RUN npm install
 RUN npm run build --prod
 
