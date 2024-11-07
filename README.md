@@ -1,4 +1,4 @@
-# Containerization of EmartApp using Docker
+# Containerization of Microservice app using Docker
 
 ## Project Overview
 This project demonstrates the containerization of an application named **EmartApp** using Docker. The architecture consists of three main components, each running in its own Docker container:
