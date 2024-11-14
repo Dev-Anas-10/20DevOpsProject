@@ -4,8 +4,8 @@
 sudo apt update
 sudo apt upgrade -y
 
-# Install JDK 11
-sudo apt install openjdk-11-jdk -y
+# Install JDK 17
+sudo apt install openjdk-17-jdk -y
 
 # Download Jenkins key and store it in keyring
 sudo wget -O /usr/share/keyrings/jenkins-keyring.asc https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
