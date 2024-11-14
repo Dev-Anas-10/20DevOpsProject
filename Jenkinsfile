@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         maven "MAVEN3.9"
-        jdk "JDK17"
+        jdk "JDK8"
     }
 
     environment {
@@ -82,14 +82,13 @@ pipeline {
                 script {
                     withSonarQubeEnv("${SONAR_SERVER}") {
                         sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
-                            -Dsonar.projectName=vprofile-repo \
-                            -Dsonar.projectVersion=1.0 \
-                            -Dsonar.sources=src/ \
-                            -Dsonar.java.binaries=target/classes/ \
-                            -Dsonar.junit.reportsPath=target/surefire-reports/ \
-                            -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                            -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
-                            -Dsonar.java.source=1.8 -Dsonar.java.target=1.8'''
+                   -Dsonar.projectName=vprofile-repo \
+                   -Dsonar.projectVersion=1.0 \
+                   -Dsonar.sources=src/ \
+                   -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
+                   -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                   -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                   -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
                     }
                 }
             }
