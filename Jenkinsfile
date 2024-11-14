@@ -15,6 +15,8 @@ pipeline {
         NEXUS_PASS = 'admin'
         NEXUSIP = '192.168.100.22'
         NEXUSPORT = '8081'
+        SONAR_SERVER = "sonarserver"      // SonarQube server name configured in Jenkins
+        SONAR_SCANNER = "sonarscanner"    // SonarQube scanner tool name configured in Jenkins
     }
 
     stages {
@@ -61,6 +63,24 @@ pipeline {
                 }
                 failure {
                     echo "Checkstyle failed."
+                }
+            }
+        }
+
+        stage('CODE ANALYSIS with SONARQUBE') {
+            environment {
+                scannerHome = tool "${SONAR_SCANNER}"
+            }
+            steps {
+                withSonarQubeEnv("${SONAR_SERVER}") {
+                    sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
+                        -Dsonar.projectName=vprofile-repo \
+                        -Dsonar.projectVersion=1.0 \
+                        -Dsonar.sources=src/ \
+                        -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
+                        -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                        -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                        -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
                 }
             }
         }
