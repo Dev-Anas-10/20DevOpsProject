@@ -16,15 +16,17 @@ pipeline {
         NEXUS_PASS = 'admin'
         NEXUSIP = '192.168.100.22'
         NEXUSPORT = '8081'
-        SONAR_SERVER = "sonarserver"      // SonarQube server name configured in Jenkins
-        SONAR_SCANNER = "sonarscanner"    // SonarQube scanner tool name configured in Jenkins
+        SONAR_SERVER = 'sonarserver'      // SonarQube server name configured in Jenkins
+        SONAR_SCANNER = 'sonarscanner'    // SonarQube scanner tool name configured in Jenkins
     }
 
     stages {
         stage('Build') {
             steps {
-                // Run Maven build with custom settings.xml and skipping tests
-                sh 'mvn -s settings.xml -DskipTests install'
+                script {
+                    // Run Maven build with custom settings.xml and skipping tests
+                    sh 'mvn -s settings.xml -DskipTests install'
+                }
             }
             post {
                 success {
@@ -40,8 +42,10 @@ pipeline {
 
         stage('Test') {
             steps {
-                // Run Maven tests
-                sh 'mvn -s settings.xml test'
+                script {
+                    // Run Maven tests
+                    sh 'mvn -s settings.xml test'
+                }
             }
             post {
                 success {
@@ -55,8 +59,10 @@ pipeline {
 
         stage('Checkstyle') {
             steps {
-                // Run Maven Checkstyle
-                sh 'mvn -s settings.xml checkstyle:checkstyle'
+                script {
+                    // Run Maven Checkstyle
+                    sh 'mvn -s settings.xml checkstyle:checkstyle'
+                }
             }
             post {
                 success {
@@ -68,22 +74,45 @@ pipeline {
             }
         }
 
-        stage('CODE ANALYSIS with SONARQUBE') {
+        stage('Code Analysis with SonarQube') {
             environment {
                 scannerHome = tool "${SONAR_SCANNER}"
             }
             steps {
-                withSonarQubeEnv("${SONAR_SERVER}") {
-                    sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
-                        -Dsonar.projectName=vprofile-repo \
-                        -Dsonar.projectVersion=1.0 \
-                        -Dsonar.sources=src/ \
-                        -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
-                        -Dsonar.junit.reportsPath=target/surefire-reports/ \
-                        -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                        -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
+                script {
+                    withSonarQubeEnv("${SONAR_SERVER}") {
+                        sh '''${scannerHome}/bin/sonar-scanner \
+                            -Dsonar.projectKey=vprofile \
+                            -Dsonar.projectName=vprofile-repo \
+                            -Dsonar.projectVersion=1.0 \
+                            -Dsonar.sources=src/ \
+                            -Dsonar.java.binaries=target/classes/ \
+                            -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                            -Dsonar.jacoco.reportsPath=target/jacoco.exec \
+                            -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
+                    }
                 }
             }
+            post {
+                success {
+                    echo "SonarQube analysis completed successfully."
+                }
+                failure {
+                    echo "SonarQube analysis failed."
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo "Pipeline completed."
+        }
+        success {
+            echo "All stages completed successfully."
+        }
+        failure {
+            echo "Pipeline failed."
         }
     }
 }
