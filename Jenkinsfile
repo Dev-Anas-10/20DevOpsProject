@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        maven 'MAVEN3.9' 
+        maven 'MAVEN3.9'
     }
 
     environment {
@@ -18,12 +18,51 @@ pipeline {
     }
 
     stages {
-
         stage('Build') {
             steps {
+                // Run Maven build with custom settings.xml and skipping tests
                 sh 'mvn -s settings.xml -DskipTests install'
+            }
+            post {
+                success {
+                    echo "Build successful. Archiving artifacts..."
+                    // Archive all WAR files generated during the build
+                    archiveArtifacts '**/*.war'
+                }
+                failure {
+                    echo "Build failed. No artifacts will be archived."
+                }
             }
         }
 
+        stage('Test') {
+            steps {
+                // Run Maven tests
+                sh 'mvn test'
+            }
+            post {
+                success {
+                    echo "Tests passed successfully."
+                }
+                failure {
+                    echo "Tests failed."
+                }
+            }
+        }
+
+        stage('Checkstyle') {
+            steps {
+                // Run Maven Checkstyle
+                sh 'mvn checkstyle:checkstyle'
+            }
+            post {
+                success {
+                    echo "Checkstyle completed successfully."
+                }
+                failure {
+                    echo "Checkstyle failed."
+                }
+            }
+        }
     }
 }
