@@ -38,7 +38,7 @@ pipeline {
         stage('Test') {
             steps {
                 // Run Maven tests
-                sh 'mvn test'
+                sh 'mvn -s settings.xml test'
             }
             post {
                 success {
@@ -53,7 +53,7 @@ pipeline {
         stage('Checkstyle') {
             steps {
                 // Run Maven Checkstyle
-                sh 'mvn checkstyle:checkstyle'
+                sh 'mvn -s settings.xml checkstyle:checkstyle'
             }
             post {
                 success {
