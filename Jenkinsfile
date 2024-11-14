@@ -34,13 +34,13 @@ pipeline {
                 success {
                     echo "Build successful. Archiving artifacts..."
                     archiveArtifacts '**/*.war'
-                    slackSend channel: '#build-notifications', 
+                    slackSend channel: '#devops', 
                                color: 'good', 
                                message: "Build succeeded: <${env.BUILD_URL}|${env.JOB_NAME} - ${env.BUILD_NUMBER}>"
                 }
                 failure {
                     echo "Build failed. No artifacts will be archived."
-                    slackSend channel: '#build-notifications', 
+                    slackSend channel: '#devops', 
                                color: 'danger', 
                                message: "Build failed: <${env.BUILD_URL}|${env.JOB_NAME} - ${env.BUILD_NUMBER}>"
                 }
@@ -56,13 +56,13 @@ pipeline {
             post {
                 success {
                     echo "Tests passed successfully."
-                    slackSend channel: '#build-notifications', 
+                    slackSend channel: '#devops', 
                                color: 'good', 
                                message: "Tests passed: <${env.BUILD_URL}|${env.JOB_NAME} - ${env.BUILD_NUMBER}>"
                 }
                 failure {
                     echo "Tests failed."
-                    slackSend channel: '#build-notifications', 
+                    slackSend channel: '#devops', 
                                color: 'danger', 
                                message: "Tests failed: <${env.BUILD_URL}|${env.JOB_NAME} - ${env.BUILD_NUMBER}>"
                 }
@@ -97,19 +97,19 @@ pipeline {
     post {
         always {
             echo "Pipeline completed."
-            slackSend channel: '#build-notifications', 
+            slackSend channel: '#devops', 
                        color: '#439FE0', 
                        message: "Pipeline completed: <${env.BUILD_URL}|${env.JOB_NAME} - ${env.BUILD_NUMBER}>"
         }
         success {
             echo "All stages completed successfully."
-            slackSend channel: '#build-notifications', 
+            slackSend channel: '#devops', 
                        color: 'good', 
                        message: "Pipeline succeeded: <${env.BUILD_URL}|${env.JOB_NAME} - ${env.BUILD_NUMBER}>"
         }
         failure {
             echo "Pipeline failed."
-            slackSend channel: '#build-notifications', 
+            slackSend channel: '#devops', 
                        color: 'danger', 
                        message: "Pipeline failed: <${env.BUILD_URL}|${env.JOB_NAME} - ${env.BUILD_NUMBER}>"
         }
