@@ -24,7 +24,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Run Maven build with custom settings.xml and skipping tests
+                    // Run Maven build with custom settings.xml, skipping tests
                     sh 'mvn -s settings.xml -DskipTests install'
                 }
             }
@@ -81,15 +81,15 @@ pipeline {
             steps {
                 script {
                     withSonarQubeEnv("${SONAR_SERVER}") {
-                        sh '''${scannerHome}/bin/sonar-scanner \
-                            -Dsonar.projectKey=vprofile \
+                        sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
                             -Dsonar.projectName=vprofile-repo \
                             -Dsonar.projectVersion=1.0 \
                             -Dsonar.sources=src/ \
                             -Dsonar.java.binaries=target/classes/ \
                             -Dsonar.junit.reportsPath=target/surefire-reports/ \
                             -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                            -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
+                            -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml \
+                            -Dsonar.java.source=1.8 -Dsonar.java.target=1.8'''
                     }
                 }
             }
