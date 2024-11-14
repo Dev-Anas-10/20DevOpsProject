@@ -15,7 +15,7 @@ pipeline {
         SONAR_SERVER = 'sonarserver'      // SonarQube server name configured in Jenkins
         SONAR_SCANNER = 'sonarscanner'    // SonarQube scanner tool name configured in Jenkins
         NEXUS_CREDENTIALS_ID = 'nexuslogin'   // Jenkins credential ID for Nexus
-        NEXUS_URL = 'http://192.168.100.22:8081' // Nexus server URL
+        NEXUS_URL = '192.168.100.22:8081' // Nexus server URL
         RELEASE_REPO = 'vprofile-release'       // Nexus repository for releases
         GROUP_ID = 'QA'
         ARTIFACT_ID = 'vproapp'
