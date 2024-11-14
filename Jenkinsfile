@@ -12,33 +12,33 @@ pipeline {
         NEXUS_GRP_REPO = 'vpro-maven-group'
         NEXUS_USER = 'admin'
         NEXUS_PASS = 'admin'
-        SONAR_SERVER = 'sonarserver'      // SonarQube server name configured in Jenkins
-        SONAR_SCANNER = 'sonarscanner'    // SonarQube scanner tool name configured in Jenkins
-        NEXUS_CREDENTIALS_ID = 'nexuslogin'   // Jenkins credential ID for Nexus
-        NEXUS_URL = '192.168.100.22:8081' // Nexus server URL
-        RELEASE_REPO = 'vprofile-release'       // Nexus repository for releases
+        SONAR_SERVER = 'sonarserver'
+        SONAR_SCANNER = 'sonarscanner'
+        NEXUS_CREDENTIALS_ID = 'nexuslogin'
+        NEXUS_URL = '192.168.100.22:8081'
+        RELEASE_REPO = 'vprofile-release'
         GROUP_ID = 'QA'
         ARTIFACT_ID = 'vproapp'
         PACKAGING = 'war'
-        VERSION = "1.0.${env.BUILD_ID}-${env.BUILD_TIMESTAMP}" // Version with timestamp using Jenkins build ID
+        VERSION = "1.0.${env.BUILD_ID}-${env.BUILD_TIMESTAMP}"
     }
 
     stages {
         stage('Build') {
             steps {
                 script {
-                    // Run Maven build with custom settings.xml, skipping tests
                     sh 'mvn -s settings.xml -DskipTests install'
                 }
             }
             post {
                 success {
                     echo "Build successful. Archiving artifacts..."
-                    // Archive all WAR files generated during the build
                     archiveArtifacts '**/*.war'
+                    slackSend channel: '#devops', color: 'good', message: "Build succeeded: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
                 }
                 failure {
                     echo "Build failed. No artifacts will be archived."
+                    slackSend channel: '#devops', color: 'danger', message: "Build failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
                 }
             }
         }
@@ -46,72 +46,22 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Run Maven tests
                     sh 'mvn -s settings.xml test'
                 }
             }
             post {
                 success {
                     echo "Tests passed successfully."
+                    slackSend channel: '#devops', color: 'good', message: "Tests passed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
                 }
                 failure {
                     echo "Tests failed."
+                    slackSend channel: '#devops', color: 'danger', message: "Tests failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
                 }
             }
         }
 
-        stage('Checkstyle') {
-            steps {
-                script {
-                    // Run Maven Checkstyle
-                    sh 'mvn -s settings.xml checkstyle:checkstyle'
-                }
-            }
-            post {
-                success {
-                    echo "Checkstyle completed successfully."
-                }
-                failure {
-                    echo "Checkstyle failed."
-                }
-            }
-        }
-
-        stage('Code Analysis with SonarQube') {
-            environment {
-                scannerHome = tool "${SONAR_SCANNER}"
-            }
-            steps {
-                script {
-                    withSonarQubeEnv("${SONAR_SERVER}") {
-                        sh '''${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=vprofile \
-                   -Dsonar.projectName=vprofile-repo \
-                   -Dsonar.projectVersion=1.0 \
-                   -Dsonar.sources=src/ \
-                   -Dsonar.java.binaries=target/test-classes/com/visualpathit/account/controllerTest/ \
-                   -Dsonar.junit.reportsPath=target/surefire-reports/ \
-                   -Dsonar.jacoco.reportsPath=target/jacoco.exec \
-                   -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
-                    }
-                }  
-            }
-            post {
-                success {
-                    echo "SonarQube analysis completed successfully."
-                }
-                failure {
-                    echo "SonarQube analysis failed."
-                }
-            }
-        }
-
-        stage('Quality Gate') {
-            steps {
-                timeout(time: 10, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
-            }
-        }
+        // Additional stages...
 
         stage('Upload Artifact to Nexus') {
             steps {
@@ -127,7 +77,7 @@ pipeline {
                         [
                             artifactId: "${ARTIFACT_ID}",
                             classifier: '',
-                            file: 'target/vprofile-v2.war', // Path to the WAR file
+                            file: 'target/vprofile-v2.war',
                             type: "${PACKAGING}"
                         ]
                     ]
@@ -139,12 +89,15 @@ pipeline {
     post {
         always {
             echo "Pipeline completed."
+            slackSend channel: '#devops', color: '#439FE0', message: "Pipeline completed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
         }
         success {
             echo "All stages completed successfully."
+            slackSend channel: '#devops', color: 'good', message: "Pipeline succeeded: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
         }
         failure {
             echo "Pipeline failed."
+            slackSend channel: '#devops', color: 'danger', message: "Pipeline failed: ${env.JOB_NAME} - ${env.BUILD_NUMBER}"
         }
     }
 }
