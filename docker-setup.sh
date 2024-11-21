@@ -20,8 +20,9 @@ sudo apt-get update
 # Install Docker Engine, CLI, and other necessary components non-interactively
 sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 
-# Add the 'ubuntu' user to the 'docker' group to avoid needing sudo
-sudo usermod -aG docker ubuntu
+# Add the 'vagrant' user to the 'docker' group to avoid needing sudo
+sudo usermod -aG docker vagrant
+sudo usermod -aG docker jenkins
 
 # Download Docker Compose standalone binary and make it executable
 curl -SL https://github.com/docker/compose/releases/download/v2.29.6/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose

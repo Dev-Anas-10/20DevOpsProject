@@ -20,6 +20,7 @@ Vagrant.configure("2") do |config|
 
     # Provisioning script for Jenkins
     jenkins.vm.provision "shell", path: "Jenkins-Setup.sh"
+    jenkins.vm.provision "shell", path: "docker-setup.sh"
     jenkins.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
       reboot
