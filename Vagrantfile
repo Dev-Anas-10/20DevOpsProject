@@ -23,11 +23,11 @@ Vagrant.configure("2") do |config|
     jenkins.vm.provision "shell", path: "docker-setup.sh"
     jenkins.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
-      reboot
       echo "Administrator password of jenkins is "
       echo "###############################################"
       cat /var/lib/jenkins/secrets/initialAdminPassword
       echo "###############################################"
+      reboot
 
     SHELL
   end
@@ -52,11 +52,11 @@ Vagrant.configure("2") do |config|
     nexus.vm.provision "shell", path: "Nexus-Setup-JDK11.sh"
     nexus.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
-      reboot
       echo "Your admin user password is"
       echo "###############################################"
       cat /opt/nexus/sonatype-work/nexus3/admin.password
       echo "###############################################"
+      reboot
 
     SHELL
   end
