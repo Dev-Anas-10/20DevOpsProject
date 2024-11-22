@@ -3,24 +3,27 @@ pipeline {
 
     tools {
         maven "MAVEN3.9"
-        jdk "JDK8"
+        jdk "JDK17"
     }
 
     environment {
-        SNAP_REPO = 'vprofile-snapshot'
-        CENTRAL_REPO = 'vpro-maven-central'
-        NEXUS_GRP_REPO = 'vpro-maven-group'
+        SNAP_REPO = 'myproject-snapshot'
+        CENTRAL_REPO = 'myproject-dep'
+        NEXUS_GRP_REPO = 'myproject-group'
         NEXUS_USER = 'admin'
         NEXUS_PASS = 'admin'
         SONAR_SERVER = 'sonarserver'
         SONAR_SCANNER = 'sonarscanner'
         NEXUS_CREDENTIALS_ID = 'nexuslogin'
         NEXUS_URL = '192.168.100.22:8081'
-        RELEASE_REPO = 'vprofile-release'
+        RELEASE_REPO = 'myproject-release'
         GROUP_ID = 'QA'
         ARTIFACT_ID = 'vproapp'
         PACKAGING = 'war'
         VERSION = "1.0.${env.BUILD_ID}-${env.BUILD_TIMESTAMP}"
+        registery_cred = ''
+        appRegistry = ''
+        vprofileregistry = ''
     }
 
     stages {

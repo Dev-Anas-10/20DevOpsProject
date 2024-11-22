@@ -1,0 +1,18 @@
+SonarQube Scanner
+Docker Pipeline
+Docker
+Pipeline Utility Steps
+Sonar Quality Gates
+Nexus Artifact Uploader
+Build Timestamp
+Pipeline Maven Integration
+Maven Integration
+Github Integration
+Slack Notification
+Amazon ECR
+Amazon Web Services SDK :: All
+CloudBees Docker Build and Publish
+Docker Compose Build Step
+Pipeline: AWS Steps
+Role-based Authorization Strategy
+ssh agent
