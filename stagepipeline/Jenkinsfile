@@ -147,8 +147,8 @@ pipeline {
         stage('Docker Compose Up') {
             steps {
                 script {
-                    // Use the built-in docker-compose step
-                    dockerComposeUp(projectDirectory: './', file: 'docker-compose.yml', detached: true)
+                    // Using a custom docker-compose file
+                    sh 'docker-compose -f up -d'
                 }
             }
             post {
