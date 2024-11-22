@@ -148,7 +148,7 @@ pipeline {
             steps {
                 script {
                     // Using a custom docker-compose file
-                    sh 'docker-compose -f up -d'
+                    sh 'docker-compose -f docker-compose.yml up -d'
                 }
             }
             post {
