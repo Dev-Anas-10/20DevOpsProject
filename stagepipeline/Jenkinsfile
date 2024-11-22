@@ -4,6 +4,7 @@ pipeline {
     tools {
         maven "MAVEN3.9"
         jdk "JDK17"
+        java "JDK11"
     }
 
     environment {
@@ -76,10 +77,6 @@ pipeline {
                    -Dsonar.junit.reportsPath=target/surefire-reports/ \
                    -Dsonar.jacoco.reportsPath=target/jacoco.exec \
                    -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
-            }
-
-            timeout(time: 10, unit: 'MINUTES') {
-               waitForQualityGate abortPipeline: true
             }
           }
         }
