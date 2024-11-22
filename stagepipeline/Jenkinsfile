@@ -21,9 +21,8 @@ pipeline {
         ARTIFACT_ID = 'vproapp'
         PACKAGING = 'war'
         VERSION = "1.0.${env.BUILD_ID}-${env.BUILD_TIMESTAMP}"
-        registery_cred = ''
-        appRegistry = ''
-        vprofileregistry = ''
+        SLACK_CHANNEL = '#test' // Specify your Slack channel
+        SLACK_CREDENTIALS_ID = 'slacktoken' // Specify your Slack credentials ID
     }
 
     stages {
@@ -31,6 +30,14 @@ pipeline {
             steps {
                 script {
                     sh 'mvn -s settings.xml -DskipTests install'
+                }
+            }
+            post {
+                success {
+                    slackSend(channel: "${SLACK_CHANNEL}", message: "Build was successful! :white_check_mark:")
+                }
+                failure {
+                    slackSend(channel: "${SLACK_CHANNEL}", message: "Build failed! :x:")
                 }
             }
         }
@@ -41,11 +48,27 @@ pipeline {
                     sh 'mvn -s settings.xml test'
                 }
             }
+            post {
+                success {
+                    slackSend(channel: "${SLACK_CHANNEL}", message: "Tests passed successfully! :white_check_mark:")
+                }
+                failure {
+                    slackSend(channel: "${SLACK_CHANNEL}", message: "Tests failed! :x:")
+                }
+            }
         }
 
         stage('INTEGRATION TEST'){
             steps {
                 sh 'mvn -s settings.xml verify -DskipUnitTests'
+            }
+            post {
+                success {
+                    slackSend(channel: "${SLACK_CHANNEL}", message: "Integration tests passed! :white_check_mark:")
+                }
+                failure {
+                    slackSend(channel: "${SLACK_CHANNEL}", message: "Integration tests failed! :x:")
+                }
             }
         }
 		
@@ -55,14 +78,17 @@ pipeline {
             }
             post {
                 success {
-                    echo 'Generated Analysis Result'
+                    slackSend(channel: "${SLACK_CHANNEL}", message: "Checkstyle code analysis passed! :white_check_mark:")
+                }
+                failure {
+                    slackSend(channel: "${SLACK_CHANNEL}", message: "Checkstyle code analysis failed! :x:")
                 }
             }
         }
 
         stage('CODE ANALYSIS with SONARQUBE') {
           
-		  environment {
+          environment {
              scannerHome = tool "${SONAR_SCANNER}"
           }
 
@@ -78,9 +104,15 @@ pipeline {
                    -Dsonar.java.checkstyle.reportPaths=target/checkstyle-result.xml'''
             }
           }
+          post {
+              success {
+                  slackSend(channel: "${SLACK_CHANNEL}", message: "SonarQube code analysis completed successfully! :white_check_mark:")
+              }
+              failure {
+                  slackSend(channel: "${SLACK_CHANNEL}", message: "SonarQube code analysis failed! :x:")
+              }
+          }
         }
-
-        // Additional stages...
 
         stage('Upload Artifact to Nexus') {
             steps {
@@ -102,6 +134,37 @@ pipeline {
                     ]
                 )
             }
+            post {
+                success {
+                    slackSend(channel: "${SLACK_CHANNEL}", message: "Artifact successfully uploaded to Nexus! :white_check_mark:")
+                }
+                failure {
+                    slackSend(channel: "${SLACK_CHANNEL}", message: "Artifact upload to Nexus failed! :x:")
+                }
+            }
+        }
+
+        stage('Docker Compose Up') {
+            steps {
+                script {
+                    // Use the built-in docker-compose step
+                    dockerComposeUp(projectDirectory: './', file: 'docker-compose.yml', detached: true)
+                }
+            }
+            post {
+                success {
+                    slackSend(channel: "${SLACK_CHANNEL}", message: "Docker Compose containers are up! :white_check_mark:")
+                }
+                failure {
+                    slackSend(channel: "${SLACK_CHANNEL}", message: "Docker Compose failed! :x:")
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
         }
     }
 }
