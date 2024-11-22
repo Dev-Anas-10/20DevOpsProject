@@ -49,9 +49,10 @@ Vagrant.configure("2") do |config|
     end
 
     # Provisioning script for Nexus
-    nexus.vm.provision "shell", path: "Nexus-Setup-JDK11.sh"
+    nexus.vm.provision "shell", path: "Nexus-Setup-JDK17.sh"
     nexus.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
+      reboot
       echo "Your admin user password is"
       echo "###############################################"
       cat /opt/nexus/sonatype-work/nexus3/admin.password

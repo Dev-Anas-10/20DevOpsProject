@@ -1,16 +1,17 @@
 #!/bin/bash
-sudo yum install java-11-openjdk.x86_64 wget -y   
+sudo yum install java-17-openjdk.x86_64 wget -y   
 mkdir -p /opt/nexus/   
 mkdir -p /tmp/nexus/                           
 cd /tmp/nexus/
-NEXUSURL="https://download.sonatype.com/nexus/3/nexus-3.70.1-02-java11-unix.tar.gz"
+NEXUSURL="https://download.sonatype.com/nexus/3/latest-unix.tar.gz" #nexus 3.71 need JDK17.
 wget $NEXUSURL -O nexus.tar.gz
 sleep 10
-EXTOUT=`tar xzvf nexus.tar.gz`
-NEXUSDIR=`echo $EXTOUT | cut -d '/' -f1`
+# EXTOUT=`tar xzvf nexus.tar.gz`
+NEXUSDIR=$(ls -d nexus*/ | grep '^nexus' | cut -d '/' -f1)
 sleep 5
-rm -rf /tmp/nexus/nexus.tar.gz
+# rm -rf /tmp/nexus/nexus.tar.gz
 cp -r /tmp/nexus/* /opt/nexus/
+rm -rf /tmp/nexus
 sleep 5
 useradd nexus
 chown -R nexus.nexus /opt/nexus 
@@ -36,8 +37,3 @@ echo 'run_as_user="nexus"' > /opt/nexus/$NEXUSDIR/bin/nexus.rc
 systemctl daemon-reload
 systemctl start nexus
 systemctl enable nexus
-
-echo "Your admin user password is"
-echo "###############################################"
-cat /opt/nexus/sonatype-work/nexus3/admin.password
-echo "###############################################"
