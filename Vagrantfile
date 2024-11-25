@@ -19,7 +19,7 @@ Vagrant.configure("2") do |config|
     end
 
     # Provisioning script for Jenkins
-    jenkins.vm.provision "shell", path: "Jenkins-Setup.sh"
+    #jenkins.vm.provision "shell", path: "Jenkins-Setup.sh"
     jenkins.vm.provision "shell", path: "docker-setup.sh"
     jenkins.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
@@ -36,7 +36,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "nexus" do |nexus|
     # Set hostname and base box
     nexus.vm.hostname = "nexus"
-    nexus.vm.box = "eurolinux-vagrant/centos-stream-9"  # Base box for Nexus
+    nexus.vm.box = "generic/alma9"  # Base box for Nexus
 
     # Network configuration
     nexus.vm.network "private_network", ip: "192.168.56.22"
@@ -49,10 +49,9 @@ Vagrant.configure("2") do |config|
     end
 
     # Provisioning script for Nexus
-    nexus.vm.provision "shell", path: "Nexus-Setup-JDK17.sh"
+    #nexus.vm.provision "shell", path: "Nexus-Setup-JDK17.sh"
     nexus.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
-      reboot
       echo "Your admin user password is"
       echo "###############################################"
       cat /opt/nexus/sonatype-work/nexus3/admin.password
