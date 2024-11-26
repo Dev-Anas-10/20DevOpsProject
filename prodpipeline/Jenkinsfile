@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         SLACK_CHANNEL = '#stage'  
-        ECR = 'ECR' 
+        ECR = 'my-ecr-url' 
         AWS_CRED = 'aws-cred' 
     }
 
