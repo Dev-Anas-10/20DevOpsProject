@@ -2,7 +2,9 @@ pipeline {
     agent { label 'docker' }
 
     environment {
-        SLACK_CHANNEL = '#stage' // Specify your Slack channel
+        SLACK_CHANNEL = '#stage'  
+        ECR = 'ECR' 
+        AWS_CRED = 'aws-cred' 
     }
 
     stages {
@@ -10,7 +12,6 @@ pipeline {
         stage('Docker Compose Up') {
             steps {
                 script {
-                    // Using a custom docker-compose file
                     sh 'docker-compose -f docker-compose.yml up -d'
                 }
             }
@@ -24,6 +25,30 @@ pipeline {
             }
         }
 
+        stage('Login to ECR') {
+            steps {
+                script {
+                    withAWS(credentials: "${AWS_CRED}", region: 'us-east-1') {
+                        sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR}'
+                    }
+                }
+            }
+        }
+
+        stage('Push Images to ECR') {
+            steps {
+                script {
+                    sh '''
+                    docker tag db01 ${ECR}/db01:latest
+                    docker tag app01 ${ECR}/app01:latest
+
+                    docker push ${ECR}/db01:latest
+                    docker push ${ECR}/app01:latest
+                    '''
+                }
+            }
+        }
+    }
 
     post {
         always {
