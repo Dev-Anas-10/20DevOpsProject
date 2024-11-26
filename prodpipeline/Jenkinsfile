@@ -5,8 +5,8 @@ pipeline {
         SLACK_CHANNEL = '#stage'
         ECR = credentials('my-ecr-url')  // Reference the stored secret
         AWS_LOGIN = credentials('aws-cred')
-        your-service-name = 'myproject-svc'
-        your-cluster-name = 'vprofile'
+        your_service_name = 'myproject-svc'
+        your_cluster_name = 'vprofile'
     }
 
     stages {
@@ -55,8 +55,8 @@ pipeline {
         script {
             withAWS(credentials: "${AWS_LOGIN}", region: 'us-east-1') {
                 sh '''
-                aws ecs update-service --cluster ${your-cluster-name} \
-                --service ${your-service-name} \
+                aws ecs update-service --cluster ${your_cluster_name} \
+                --service ${your_service_name} \
                 --force-new-deployment
                 '''
             }
