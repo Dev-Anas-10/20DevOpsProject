@@ -4,7 +4,6 @@ pipeline {
     environment {
         SLACK_CHANNEL = '#stage'
         ECR = credentials('my-ecr-url')  // Reference the stored secret
-        AWS_LOGIN = credentials('aws-cred')
         your_service_name = 'myproject-svc'
         your_cluster_name = 'vprofile'
     }
@@ -29,7 +28,7 @@ pipeline {
         stage('Login to ECR') {
             steps {
                 script {
-                    withAWS(credentials: "${AWS_LOGIN}", region: 'us-east-1') {
+                    withAWS(credentials: 'aws-cred', region: 'us-east-1') {
                         sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR}'
                     }
                 }
@@ -53,7 +52,7 @@ pipeline {
         stage('Deploy to ECS') {
     steps {
         script {
-            withAWS(credentials: "${AWS_LOGIN}", region: 'us-east-1') {
+            withAWS(credentials: 'aws-cred', region: 'us-east-1') {
                 sh '''
                 aws ecs update-service --cluster ${your_cluster_name} \
                 --service ${your_service_name} \
