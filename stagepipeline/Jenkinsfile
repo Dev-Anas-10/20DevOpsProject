@@ -1,5 +1,9 @@
 pipeline {
-    agent { label 'bash' }
+    agent any
+
+    tools {
+        maven 'MAVEN3.9'
+    }
 
     environment {
         SNAP_REPO = 'myproject-snapshot'
@@ -16,8 +20,7 @@ pipeline {
         ARTIFACT_ID = 'vproapp'
         PACKAGING = 'war'
         VERSION = "1.0.${env.BUILD_ID}-${env.BUILD_TIMESTAMP}"
-        SLACK_CHANNEL = '#ecr' // Specify your Slack channel
-        SLACK_CREDENTIALS_ID = 'slacktoken' // Specify your Slack credentials ID
+        SLACK_CHANNEL = '#stage' // Specify your Slack channel
     }
 
     stages {

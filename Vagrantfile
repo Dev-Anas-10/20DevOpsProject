@@ -19,8 +19,7 @@ Vagrant.configure("2") do |config|
     end
 
     # Provisioning script for Jenkins
-    #jenkins.vm.provision "shell", path: "Jenkins-Setup.sh"
-    jenkins.vm.provision "shell", path: "docker-setup.sh"
+    jenkins.vm.provision "shell", path: "Jenkins-Setup.sh"
     jenkins.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
       echo "Administrator password of jenkins is "
@@ -32,11 +31,36 @@ Vagrant.configure("2") do |config|
     SHELL
   end
 
+  # Configuration for docker VM
+  config.vm.define "docker" do |docker|
+    # Set hostname and base box
+    docker.vm.hostname = "docker"
+    docker.vm.box = "ubuntu/jammy64"  # Base box for docker
+
+    # Network configuration
+    docker.vm.network "private_network", ip: "192.168.56.26"
+    docker.vm.network "public_network", ip: "192.168.100.26"
+
+    # Provider-specific configuration (VirtualBox in this case)
+    docker.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = "2"
+    end
+
+    # Provisioning script for docker
+    docker.vm.provision "shell", path: "docker-setup.sh"
+    docker.vm.provision "shell", inline: <<-SHELL
+      #!/bin/bash
+      reboot
+
+    SHELL
+  end
+
   # Configuration for Nexus VM
   config.vm.define "nexus" do |nexus|
     # Set hostname and base box
     nexus.vm.hostname = "nexus"
-    nexus.vm.box = "generic/alma9"  # Base box for Nexus
+    nexus.vm.box = "eurolinux-vagrant/centos-stream-9"  # Base box for Nexus
 
     # Network configuration
     nexus.vm.network "private_network", ip: "192.168.56.22"
@@ -44,19 +68,19 @@ Vagrant.configure("2") do |config|
 
     # Provider-specific configuration (VirtualBox in this case)
     nexus.vm.provider "virtualbox" do |vb|
-      vb.memory = "4096"
+      vb.memory = "3000"
       vb.cpus = "2"
     end
 
     # Provisioning script for Nexus
-    #nexus.vm.provision "shell", path: "Nexus-Setup-JDK17.sh"
+    nexus.vm.provision "shell", path: "Nexus-Setup-JDK17.sh"
     nexus.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
+      reboot
       echo "Your admin user password is"
       echo "###############################################"
       cat /opt/nexus/sonatype-work/nexus3/admin.password
       echo "###############################################"
-      reboot
 
     SHELL
   end
@@ -73,7 +97,7 @@ Vagrant.configure("2") do |config|
 
     # Provider-specific configuration (VirtualBox in this case)
     sonar.vm.provider "virtualbox" do |vb|
-      vb.memory = "4096"
+      vb.memory = "3000"
       vb.cpus = "2"
     end
 
