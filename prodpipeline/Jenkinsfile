@@ -1,9 +1,8 @@
 pipeline {
-    agent { label 'bash' }
+    agent { label 'docker' }
 
     environment {
-        SLACK_CHANNEL = '#ecr' // Specify your Slack channel
-        SLACK_CREDENTIALS_ID = 'slacktoken' // Specify your Slack credentials ID
+        SLACK_CHANNEL = '#stage' // Specify your Slack channel
     }
 
     stages {
