@@ -2,17 +2,15 @@ pipeline {
     agent { label 'docker' }
 
     environment {
-        SLACK_CHANNEL = '#stage'  
-        ECR = 'my-ecr-url' 
-        AWS_CRED = 'aws-cred' 
+        SLACK_CHANNEL = '#stage'
+        ECR = credentials('my-ecr-url')  // Reference the stored secret
     }
 
     stages {
-
         stage('Docker Compose Up') {
             steps {
                 script {
-                    sh 'docker-compose -f docker-compose.yml up -d & echo "ECR URL: ${ECR}"'
+                    sh 'docker-compose -f docker-compose.yml up -d'
                 }
             }
             post {
@@ -28,7 +26,7 @@ pipeline {
         stage('Login to ECR') {
             steps {
                 script {
-                    withAWS(credentials: "${AWS_CRED}", region: 'us-east-1') {
+                    withAWS(credentials: 'aws-cred', region: 'us-east-1') {
                         sh 'aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${ECR}'
                     }
                 }
@@ -41,7 +39,7 @@ pipeline {
                     sh '''
                     docker tag db01 ${ECR}/db01:latest
                     docker tag app01 ${ECR}/app01:latest
-
+                    
                     docker push ${ECR}/db01:latest
                     docker push ${ECR}/app01:latest
                     '''
