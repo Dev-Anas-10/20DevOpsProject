@@ -1,0 +1,32 @@
+{
+    "family": "my-ecs-task",
+    "containerDefinitions": [
+      {
+        "name": "app01",
+        "image": "<aws_account_id>.dkr.ecr.<region>.amazonaws.com/app01:latest",
+        "memory": 512,
+        "cpu": 256,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 8080,
+            "hostPort": 8080
+          }
+        ]
+      },
+      {
+        "name": "db01",
+        "image": "<aws_account_id>.dkr.ecr.<region>.amazonaws.com/db01:latest",
+        "memory": 512,
+        "cpu": 256,
+        "essential": true,
+        "portMappings": [
+          {
+            "containerPort": 3306,
+            "hostPort": 3306
+          }
+        ]
+      }
+    ]
+  }
+  

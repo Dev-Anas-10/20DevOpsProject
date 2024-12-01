@@ -5,7 +5,7 @@ FROM maven:3.9.9-ibm-semeru-21-jammy AS builder
 WORKDIR /app
 
 # Clone the GitHub repository (replace the URL with your repository)
-RUN git clone -b 3.Containerization-of-Java-project-using-Docker https://github.com/Dev-Anas-10/20DevOpsProject.git
+COPY ../../ /app/20DevOpsProject
 
 # Set the working directory
 WORKDIR /app/20DevOpsProject
