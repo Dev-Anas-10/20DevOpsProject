@@ -116,13 +116,13 @@ jobs:
       # Deploy to Amazon ECS
     - name: Fill in the new image ID in the Amazon ECS task definition
       env:
-        container-name: "app"
+        container_name: "app"
         REPOSTRY: "app"
       id: task-def
       uses: aws-actions/amazon-ecs-render-task-definition@v1
       with:
         task-definition: task-definition.json
-        container-name: ${{ env.container-name }}
+        container-name: ${{ env.container_name }}
         image: ${{ secrets.registry }}/${{ env.REPOSTRY }}:${{ github.run_number }}
 
     - name: Deploy Amazon ECS task definition
