@@ -2,7 +2,6 @@
 sudo -i
 # Initializing Kubernetes Master Node
 sudo kubeadm init --apiserver-advertise-address=192.168.100.20
-sleep 120
 
 # Configure kubectl for the user
 sudo mkdir -p $HOME/.kube
