@@ -5,10 +5,10 @@ FROM maven:3.9.9-amazoncorretto-21 AS builder
 WORKDIR /app
 
 # Clone the GitHub repository (replace the URL with your repository)
-COPY ../../ ./20DevOpsProject
+COPY ../../ ./
 
 # Set the working directory
-WORKDIR /app/20DevOpsProject
+WORKDIR /app
 
 # List files to verify if pom.xml is present
 RUN ls -la
@@ -22,7 +22,7 @@ FROM tomcat:latest
 RUN rm -rf /usr/local/tomcat/webapps/*
 
 # Copy the artifact from the builder stage to the Tomcat webapps directory
-COPY --from=builder /app/20DevOpsProject/target/*.war /usr/local/tomcat/webapps/ROOT.war
+COPY --from=builder /app/target/*.war /usr/local/tomcat/webapps/ROOT.war
 
 # Expose the Tomcat port
 EXPOSE 8080
