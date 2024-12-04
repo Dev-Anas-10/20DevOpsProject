@@ -33,3 +33,4 @@ docker-compose --version
 
 # docker-compose down --volumes                  # To delete all containers
 # docker system prune -a --volumes               # To delete all thing
+# docker-compose -f docker-compose.yml up --build -d

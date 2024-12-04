@@ -5,7 +5,7 @@ FROM maven:3.9.9-amazoncorretto-21 AS builder
 WORKDIR /app
 
 # Clone the GitHub repository (replace the URL with your repository)
-COPY ../../ ./
+COPY ./ ./
 
 # Set the working directory
 WORKDIR /app
