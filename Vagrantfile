@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
 
     # Provisioning script for kubemaster
     kubemaster.vm.provision "shell", path: "kubeadm-setup.sh"
-    kubemaster.vm.provision "shell", path: "kubemaster.sh"
+    #kubemaster.vm.provision "shell", path: "kubemaster.sh"
     kubemaster.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
 
@@ -74,6 +74,31 @@ Vagrant.configure("2") do |config|
     # Provisioning script for kubenode2Qube
     kubenode2.vm.provision "shell", path: "kubeadm-setup.sh"
     kubenode2.vm.provision "shell", inline: <<-SHELL
+      #!/bin/bash
+
+    SHELL
+  end
+
+
+  # Configuration for docker VM
+  config.vm.define "docker" do |docker|
+    # Set hostname and base box
+    docker.vm.hostname = "docker"
+    docker.vm.box = "ubuntu/jammy64"  # Base box for docker
+
+    # Network configuration
+    docker.vm.network "private_network", ip: "192.168.56.26"
+    docker.vm.network "public_network", ip: "192.168.100.26"
+
+    # Provider-specific configuration (VirtualBox in this case)
+    docker.vm.provider "virtualbox" do |vb|
+      vb.memory = "2048"
+      vb.cpus = "2"
+    end
+
+    # Provisioning script for docker
+    docker.vm.provision "shell", path: "Docker-setup.sh"
+    docker.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
 
     SHELL
