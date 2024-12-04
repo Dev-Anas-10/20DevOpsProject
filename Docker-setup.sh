@@ -22,7 +22,6 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 
 # Add the 'vagrant' user to the 'docker' group to avoid needing sudo
 sudo usermod -aG docker vagrant
-sudo usermod -aG docker root
 
 # Download Docker Compose standalone binary and make it executable
 curl -SL https://github.com/docker/compose/releases/download/v2.30.3/docker-compose-linux-x86_64 -o /usr/local/bin/docker-compose
