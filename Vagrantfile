@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
 
     # Provider-specific configuration (VirtualBox in this case)
     kubemaster.vm.provider "virtualbox" do |vb|
-      vb.memory = "4096"
+      vb.memory = "3500"
       vb.cpus = "2"
     end
 
@@ -41,7 +41,7 @@ Vagrant.configure("2") do |config|
 
     # Provider-specific configuration (VirtualBox in this case)
     kubenode1.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
+      vb.memory = "1500"
       vb.cpus = "2"
     end
 
@@ -67,7 +67,7 @@ Vagrant.configure("2") do |config|
 
     # Provider-specific configuration (VirtualBox in this case)
     kubenode2.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
+      vb.memory = "1500"
       vb.cpus = "2"
     end
 
@@ -92,7 +92,7 @@ Vagrant.configure("2") do |config|
 
     # Provider-specific configuration (VirtualBox in this case)
     docker.vm.provider "virtualbox" do |vb|
-      vb.memory = "2048"
+      vb.memory = "1500"
       vb.cpus = "2"
     end
 
