@@ -27,16 +27,16 @@ services:
       - "8080:8080"
 
   # Web service (NGINX as a reverse proxy)
-  web01:
-    build:
-      context: ./Dockerfiles/web
-      dockerfile: Dockerfile
-    image: web01
-    container_name: web01
-    depends_on:
-      - app01
-    ports:
-      - "80:80"
+  #web01:
+    #build:
+      #context: ./Dockerfiles/web
+      #dockerfile: Dockerfile
+    #image: web01
+    #container_name: web01
+    #depends_on:
+      #- app01
+    #ports:
+      #- "80:80"
 
   # Memcached service
   mc01:

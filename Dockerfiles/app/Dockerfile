@@ -17,7 +17,7 @@ RUN ls -la
 RUN mvn clean install
 
 # Step 2: Copy the artifact to the Tomcat container
-FROM tomcat
+FROM tomcat:latest
 
 RUN rm -rf /usr/local/tomcat/webapps/*
 
