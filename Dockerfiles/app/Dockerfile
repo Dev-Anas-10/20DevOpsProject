@@ -5,7 +5,7 @@ FROM maven:3.9.9-amazoncorretto-21 AS builder
 WORKDIR /app
 
 # Clone the GitHub repository (replace the URL with your repository)
-RUN git clone -b 8.Java-app-deployment-on-k8s https://github.com/Dev-Anas-10/20DevOpsProject.git
+COPY ../../ ./20DevOpsProject
 
 # Set the working directory
 WORKDIR /app/20DevOpsProject
