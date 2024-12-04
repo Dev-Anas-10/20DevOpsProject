@@ -7,9 +7,6 @@ WORKDIR /app
 # Clone the GitHub repository (replace the URL with your repository)
 COPY ./ ./
 
-# Set the working directory
-WORKDIR /app
-
 # List files to verify if pom.xml is present
 RUN ls -la
 
