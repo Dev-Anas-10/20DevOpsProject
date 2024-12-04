@@ -1,5 +1,5 @@
 # Use the official MySQL image as a base
-FROM mysql:latest
+FROM mysql
 
 # Set environment variables
 ENV MYSQL_DATABASE=accounts
