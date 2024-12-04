@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-dep
+  labels:
+    app: app-dep
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app-dep
+  template:
+    metadata:
+      labels:
+        app: app-dep
+    spec:
+      initContainers:
+        - name: check-memcached
+          image: busybox
+          command: ["sh", "-c", "while ! nc -z memcached-svc 11211; do echo waiting for memcached; sleep 2; done"]
+
+        - name: check-db
+          image: busybox
+          command: ["sh", "-c", "while ! nc -z myproject-db-service 3306; do echo waiting for db; sleep 2; done"]
+
+        - name: check-rabbitmq
+          image: busybox
+          command: ["sh", "-c", "while ! nc -z rabbitmq-svc 5672; do echo waiting for rabbitmq; sleep 2; done"]
+
+      containers:
+        - name: app-dep
+          image:         
+          ports:
+            - containerPort: 8080
+              name: app-dep-port

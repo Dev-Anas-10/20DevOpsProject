@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myproject-db
+  labels:
+    app: myproject-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myproject-db
+  template:
+    metadata:
+      labels:
+        app: myproject-db
+    spec:
+      initContainers:
+        - name: init-myproject-db
+          image: busybox
+          command: ['sh', '-c', 'rm -rf /var/lib/mysql/*']  
+          volumeMounts:
+            - name: db_data
+              mountPath: /var/lib/mysql  
+      containers:
+        - name: myproject-db
+          image: mysql
+          ports:
+            - containerPort: 3306
+              name: myproject-db-port
+          env: 
+            - name: MYSQL_DATABASE
+              value: accounts
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: project-secret
+                  key: MYSQL_ROOT_PASSWORD
+          volumeMounts:
+            - name: db_data
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: db_data
+          persistentVolumeClaim:
+            claimName: myproject-pvc

@@ -47,7 +47,6 @@ Vagrant.configure("2") do |config|
 
     # Provisioning script for kubenode1
     kubenode1.vm.provision "shell", path: "kubeadm-setup.sh"
-    #kubenode1.vm.provision "shell", path: "kubenode.sh"
     kubenode1.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
 
@@ -74,7 +73,6 @@ Vagrant.configure("2") do |config|
 
     # Provisioning script for kubenode2Qube
     kubenode2.vm.provision "shell", path: "kubeadm-setup.sh"
-    #kubenode2.vm.provision "shell", path: "kubenode.sh"
     kubenode2.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
 
