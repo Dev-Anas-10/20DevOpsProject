@@ -2,8 +2,8 @@ services:
   # Database service
   db01:
     build:
-      context: .
-      dockerfile: Dockerfiles/db/Dockerfile
+      context: ./Dockerfiles/db
+      dockerfile: Dockerfile
     image: db01
     container_name: db01
     environment:
@@ -18,7 +18,7 @@ services:
   app01:
     build:
       context: .
-      dockerfile: /Dockerfiles/app/Dockerfile
+      dockerfile: ./Dockerfiles/app/Dockerfile
     image: app01
     container_name: app01
     depends_on:
