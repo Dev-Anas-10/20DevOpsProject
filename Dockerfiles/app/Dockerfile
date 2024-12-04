@@ -1,5 +1,5 @@
 # Step 1: Build the application using Maven
-FROM maven:3.9.9-amazoncorretto-21 AS builder
+FROM maven:3.9.9-amazoncorretto-17 AS builder
 
 # Set the working directory
 WORKDIR /usr/src/app
@@ -17,7 +17,7 @@ RUN ls -la
 RUN mvn clean install
 
 # Step 2: Copy the artifact to the Tomcat container
-FROM tomcat
+FROM tomcat:10.1-jre17
 
 RUN rm -rf /usr/local/tomcat/webapps/*
 
