@@ -15,7 +15,7 @@ spec:
         app: myproject-db
     spec:
       volumes:
-        - name: db_data
+        - name: db-data
           emptyDir: {}
       initContainers:
         - name: init-myproject-db
@@ -38,3 +38,6 @@ spec:
                 secretKeyRef:
                   name: project-secret
                   key: MYSQL_ROOT_PASSWORD
+          volumeMounts:
+            - name: db-data  
+              mountPath: /var/lib/mysql
