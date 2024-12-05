@@ -14,6 +14,9 @@ spec:
       labels:
         app: myproject-db
     spec:
+      volumes:
+        - name: db_data
+          emptyDir: {}
       initContainers:
         - name: init-myproject-db
           image: busybox
