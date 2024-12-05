@@ -40,6 +40,6 @@ spec:
               mountPath: /var/lib/mysql
       volumes:
         - name: db-data
-          PersistentVolumeClaim:
+          persistentVolumeClaim:
             ClaimName: myproject-pvc
           
