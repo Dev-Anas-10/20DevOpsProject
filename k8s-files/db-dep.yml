@@ -14,9 +14,6 @@ spec:
       labels:
         app: myproject-db
     spec:
-      volumes:
-        - name: db-data
-          emptyDir: {}
       initContainers:
         - name: init-myproject-db
           image: busybox
@@ -41,3 +38,8 @@ spec:
           volumeMounts:
             - name: db-data  
               mountPath: /var/lib/mysql
+      volumes:
+        - name:  db-data
+          PersistentVolumeClaim:
+            ClaimName: myproject-pvc
+          
