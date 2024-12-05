@@ -11,4 +11,5 @@ spec:
     - protocol: TCP
       port: 11211            
       targetPort: memcached-port
+      name: memcached-port
   type: ClusterIP

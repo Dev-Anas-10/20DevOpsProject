@@ -11,4 +11,5 @@ spec:
     - protocol: TCP
       port: 8080             
       targetPort: app-dep-port
+      name: app-dep-port
   type: ClusterIP

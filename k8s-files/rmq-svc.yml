@@ -11,7 +11,9 @@ spec:
     - protocol: TCP
       port: 5672            
       targetPort: rabbitmq-port
+      name: rabbitmq-port
     - protocol: TCP
       port: 15672           
-      targetPort: rabbitmq-management-port
+      targetPort: rabbitmq-mport
+      name: rabbitmq-mport
   type: ClusterIP
