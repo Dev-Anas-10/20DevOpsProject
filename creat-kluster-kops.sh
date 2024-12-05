@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export KOPS_STATE_STORE=s3://kops-project
+export KOPS_STATE_STORE=s3://kopsmyproject
 export NAME=kops.dev-anas.xyz
 
 # Create the Kubernetes cluster with the specified configuration
