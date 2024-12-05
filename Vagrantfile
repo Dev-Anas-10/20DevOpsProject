@@ -1,4 +1,8 @@
 Vagrant.configure("2") do |config|
+  
+  config.hostmanager.enabled = true
+  config.hostmanager.manage_host = true
+
   # Configuration for kops VM
   config.vm.define "kops" do |kops|
     # Set hostname and base box
