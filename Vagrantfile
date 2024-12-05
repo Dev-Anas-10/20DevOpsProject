@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
 
     # Provider-specific configuration (VirtualBox in this case)
     kubemaster.vm.provider "virtualbox" do |vb|
-      vb.memory = "3500"
+      vb.memory = "4096"
       vb.cpus = "2"
     end
 
@@ -41,64 +41,13 @@ Vagrant.configure("2") do |config|
 
     # Provider-specific configuration (VirtualBox in this case)
     kubenode1.vm.provider "virtualbox" do |vb|
-      vb.memory = "1500"
+      vb.memory = "2500"
       vb.cpus = "2"
     end
 
     # Provisioning script for kubenode1
     kubenode1.vm.provision "shell", path: "kubeadm-setup.sh"
     kubenode1.vm.provision "shell", inline: <<-SHELL
-      #!/bin/bash
-
-    SHELL
-  end
-
-
-
-  # Configuration for kubenode2Qube VM
-  config.vm.define "kubenode2" do |kubenode2|
-    # Set hostname and base box
-    kubenode2.vm.hostname = "kubenode2"
-    kubenode2.vm.box = "ubuntu/jammy64"  # Base box for kubenode2Qube
-
-    # Network configuration
-    kubenode2.vm.network "private_network", ip: "192.168.56.24"
-    kubenode2.vm.network "public_network", ip: "192.168.100.24"
-
-    # Provider-specific configuration (VirtualBox in this case)
-    kubenode2.vm.provider "virtualbox" do |vb|
-      vb.memory = "1500"
-      vb.cpus = "2"
-    end
-
-    # Provisioning script for kubenode2Qube
-    kubenode2.vm.provision "shell", path: "kubeadm-setup.sh"
-    kubenode2.vm.provision "shell", inline: <<-SHELL
-      #!/bin/bash
-
-    SHELL
-  end
-
-
-  # Configuration for docker VM
-  config.vm.define "docker" do |docker|
-    # Set hostname and base box
-    docker.vm.hostname = "docker"
-    docker.vm.box = "ubuntu/jammy64"  # Base box for docker
-
-    # Network configuration
-    docker.vm.network "private_network", ip: "192.168.56.26"
-    docker.vm.network "public_network", ip: "192.168.100.26"
-
-    # Provider-specific configuration (VirtualBox in this case)
-    docker.vm.provider "virtualbox" do |vb|
-      vb.memory = "1500"
-      vb.cpus = "2"
-    end
-
-    # Provisioning script for docker
-    docker.vm.provision "shell", path: "Docker-setup.sh"
-    docker.vm.provision "shell", inline: <<-SHELL
       #!/bin/bash
 
     SHELL

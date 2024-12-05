@@ -23,7 +23,7 @@ spec:
               mountPath: /var/lib/mysql  
       containers:
         - name: myproject-db
-          image: mysql
+          image: kubeanas/projectdb:1.0.0
           ports:
             - containerPort: 3306
               name: myproject-db-port

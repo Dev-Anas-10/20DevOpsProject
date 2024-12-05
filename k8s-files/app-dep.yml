@@ -29,7 +29,7 @@ spec:
 
       containers:
         - name: app-dep
-          image:         
+          image: kubeanas/projectapp:1.0.0    
           ports:
             - containerPort: 8080
               name: app-dep-port
