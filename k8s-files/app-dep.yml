@@ -17,15 +17,15 @@ spec:
       initContainers:
         - name: check-memcached
           image: busybox
-          command: ["sh", "-c", "while ! nc -z memcached-svc 11211; do echo waiting for memcached; sleep 2; done"]
+          command: ["sh", "-c", "while ! nc -z mc01 11211; do echo waiting for memcached; sleep 2; done"]
 
         - name: check-db
           image: busybox
-          command: ["sh", "-c", "while ! nc -z myproject-db-service 3306; do echo waiting for db; sleep 2; done"]
+          command: ["sh", "-c", "while ! nc -z db01 3306; do echo waiting for db; sleep 2; done"]
 
         - name: check-rabbitmq
           image: busybox
-          command: ["sh", "-c", "while ! nc -z rabbitmq-svc 5672; do echo waiting for rabbitmq; sleep 2; done"]
+          command: ["sh", "-c", "while ! nc -z rmq01 5672; do echo waiting for rabbitmq; sleep 2; done"]
 
       containers:
         - name: app-dep
