@@ -35,10 +35,3 @@ spec:
                 secretKeyRef:
                   name: project-secret
                   key: MYSQL_ROOT_PASSWORD
-          volumeMounts:
-            - name: myproject-pvc
-              mountPath: /var/lib/mysql
-      volumes:
-        - name: myproject-pvc
-          persistentVolumeClaim:
-            claimName: local
